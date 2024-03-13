@@ -6,7 +6,7 @@ data "terraform_remote_state" "eks_state" {
   backend = "s3"
 
   config = {
-    bucket = "bucket-name"
+    bucket = "fiap-terraform"
     key    = "eks/terraform.tfstate"
     region = "us-east-1"
   }
@@ -35,7 +35,7 @@ resource "aws_security_group" "sg-rds" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  name       = "aws_subnet_groups_rds"
+  name = "aws_subnet_groups_rds"
   subnet_ids = [
     data.terraform_remote_state.eks_state.outputs["aws_subnet_private_us_east_1a_id"],
     data.terraform_remote_state.eks_state.outputs["aws_subnet_private_us_east_1b_id"]

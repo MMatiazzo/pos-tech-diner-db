@@ -52,8 +52,8 @@ resource "aws_db_instance" "rds" {
   engine_version = "13.10"
   identifier     = "rds-pos-tech-diner"
   # manage_master_user_password  = true 
-  username                     = "change"
-  password                     = "change"
+  username                     = var.db_username
+  password                     = var.db_password
   instance_class               = "db.t3.micro"
   storage_type                 = "gp2"
   allocated_storage            = "20"

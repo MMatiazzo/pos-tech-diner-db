@@ -43,9 +43,6 @@ jobs:
           echo "DB_USERNAME=$POS_TECH_DINER_RDS_SECRETS_DB_USERNAME" >> "$GITHUB_ENV"
           echo "DB_PASSWORD=$POS_TECH_DINER_RDS_SECRETS_DB_PASSWORD" >> "$GITHUB_ENV"
 
-      - name: "Say it worked for god sake"
-        run: echo "$DB_USERNAME $DB_PASSWORD. Today is the day $POS_TECH_DINER_RDS_SECRETS_DB_USERNAME $POS_TECH_DINER_RDS_SECRETS_DB_PASSWORD!"
-
     outputs:
       DB_USERNAME: ${{ steps.aws-secrets.outputs.POS_TECH_DINER_RDS_SECRETS_DB_USERNAME }}
       DB_PASSWORD: ${{ steps.aws-secrets.outputs.POS_TECH_DINER_RDS_SECRETS_DB_PASSWORD }}
@@ -70,6 +67,9 @@ jobs:
         env:
           DB_USERNAME: ${{ needs.get-credentials.outputs.DB_USERNAME }}
           DB_PASSWORD: ${{ needs.get-credentials.outputs.DB_PASSWORD }}
+
+      - name: "Say it worked for god sake"
+        run: echo "$DB_USERNAME - $DB_PASSWORD"
 
       # - name: Setup Terraform
       #   uses: hashicorp/setup-terraform@v1

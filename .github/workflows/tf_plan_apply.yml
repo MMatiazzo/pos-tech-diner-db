@@ -69,7 +69,7 @@ jobs:
           DB_PASSWORD: ${{ needs.get-credentials.outputs.DB_PASSWORD }}
 
       - name: "Say it worked for god sake"
-        run: echo "$DB_USERNAME - $DB_PASSWORD"
+        run: echo "${{ needs.get-credentials.outputs.DB_USERNAME }} - ${{ needs.get-credentials.outputs.DB_PASSWORD }}"
 
       # - name: Setup Terraform
       #   uses: hashicorp/setup-terraform@v1

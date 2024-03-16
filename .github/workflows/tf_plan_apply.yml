@@ -56,51 +56,57 @@ jobs:
           DB_USERNAME: ${{ env.DB_USERNAME }}
           DB_PASSWORD: ${{ env.DB_PASSWORD }}
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.7.4
+      - name: var1 echo
+        run: echo ${{ env.DB_USERNAME }}
 
-      - name: Terraform fmt
-        id: fmt
-        run: terraform fmt -check
+      - name: var2 echo
+        run: echo ${{ env.DB_PASSWORD }}
 
-      - name: Terraform Init
-        id: init
-        run: terraform init
+      # - name: Setup Terraform
+      #   uses: hashicorp/setup-terraform@v1
+      #   with:
+      #     terraform_version: 1.7.4
 
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate -no-color
+      # - name: Terraform fmt
+      #   id: fmt
+      #   run: terraform fmt -check
 
-      - name: Terraform Plan
-        id: plandev
-        run: terraform plan -no-color
+      # - name: Terraform Init
+      #   id: init
+      #   run: terraform init
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+      # - name: Terraform Validate
+      #   id: validate
+      #   run: terraform validate -no-color
 
-      - uses: actions/github-script@0.9.0
-        if: github.event_name == 'pull_request'
-        env:
-          PLAN: "terraform\n${{ steps.plandev.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-            #### Terraform Validation 🤖${{ steps.validate.outputs.stdout }}
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-            <details><summary>Show Plan</summary>
-            \`\`\`${process.env.PLAN}\`\`\`
-            </details>
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
+      # - name: Terraform Plan
+      #   id: plandev
+      #   run: terraform plan -no-color
+
+      # - name: Terraform Apply
+      #   run: terraform apply -auto-approve
+
+      # - uses: actions/github-script@0.9.0
+      #   if: github.event_name == 'pull_request'
+      #   env:
+      #     PLAN: "terraform\n${{ steps.plandev.outputs.stdout }}"
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+      #       #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+      #       #### Terraform Validation 🤖${{ steps.validate.outputs.stdout }}
+      #       #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+      #       <details><summary>Show Plan</summary>
+      #       \`\`\`${process.env.PLAN}\`\`\`
+      #       </details>
+      #       *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
+      #       github.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: output
+      #       })
 
   # apply:
   #   name: "terraform apply"

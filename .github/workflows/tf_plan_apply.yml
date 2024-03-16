@@ -51,7 +51,7 @@ jobs:
       - name: Inject secrets
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["**/*.tf"]'
+          files: '["*.tf"]'
         env:
           DB_USERNAME: $DB_USERNAME
           DB_PASSWORD: $DB_PASSWORD

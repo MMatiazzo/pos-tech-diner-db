@@ -32,8 +32,8 @@ jobs:
         uses: aws-actions/aws-secretsmanager-get-secrets@v1
         with:
           secret-ids: |
-            DB_USERNAME
-            DB_PASSWORD
+            DB_USERNAME,pos-tech-diner-rds-secrets/DB_USERNAME
+            DB_PASSWORD,pos-tech-diner-rds-secrets/DB_PASSWORD
 
   plan:
     name: "terraform plan"

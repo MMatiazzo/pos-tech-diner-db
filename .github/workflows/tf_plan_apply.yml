@@ -34,9 +34,10 @@ jobs:
         with:
           secret-ids: |
             ${{ secrets.AWS_SECRETS_ARN_RDS }}
+          parse-json-secrets: true
 
       - name: env1 echo
-        run: echo $POS_TECH_DINER_RDS_SECRETS.DB_USERNAME
+        run: echo $POS_TECH_DINER_RDS_SECRETS
 
   plan:
     name: "terraform plan"

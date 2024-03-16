@@ -13,8 +13,8 @@ env:
   AWS_REGION: ${{ vars.AWS_REGION }}
 
 jobs:
-  get-credentials:
-    name: "retrieve credentials from aws secret manager"
+  plan:
+    name: "terraform plan and apply"
     runs-on: ubuntu-latest
 
     defaults:
@@ -22,6 +22,9 @@ jobs:
         shell: bash
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -37,51 +40,19 @@ jobs:
             ${{ secrets.AWS_SECRETS_ARN_RDS }}
           parse-json-secrets: true
 
-      - name: Set the value
-        id: step_one
-        run: |
-          echo "DB_USERNAME=$POS_TECH_DINER_RDS_SECRETS_DB_USERNAME" >> "$GITHUB_ENV"
-          echo "DB_PASSWORD=$POS_TECH_DINER_RDS_SECRETS_DB_PASSWORD" >> "$GITHUB_ENV"
-
-      - name: "Say it worked for god sake"
-        run: echo "${{ steps.aws-secrets.outputs.POS_TECH_DINER_RDS_SECRETS_DB_USERNAME }}"
-
-      - name: "Say it worked for god sake 2"
-        run: echo "$POS_TECH_DINER_RDS_SECRETS_DB_USERNAME"
-
-    outputs:
-      DB_USERNAME: ${{ steps.aws-secrets.outputs.POS_TECH_DINER_RDS_SECRETS_DB_USERNAME }}
-      DB_PASSWORD: ${{ steps.aws-secrets.outputs.POS_TECH_DINER_RDS_SECRETS_DB_PASSWORD }}
-
-  plan:
-    name: "terraform plan"
-    needs: get-credentials
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        shell: bash
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Test
-        run: echo ${{ env.DB_USERNAME }}
-
-      - name: Test2
-        run: echo ${{ env.DB_PASSWORD }}
-
       - name: Inject secrets
         uses: cschleiden/replace-tokens@v1
         with:
           files: '["*.tf"]'
         env:
-          DB_USERNAME: ${{ needs.get-credentials.outputs.DB_USERNAME }}
-          DB_PASSWORD: ${{ needs.get-credentials.outputs.DB_PASSWORD }}
+          DB_USERNAME: $POS_TECH_DINER_RDS_SECRETS_DB_USERNAME
+          DB_PASSWORD: $POS_TECH_DINER_RDS_SECRETS_DB_PASSWORD
 
-      - name: "Say it worked for god sake"
-        run: echo "${{ needs.get-credentials.outputs.DB_USERNAME }} - ${{ needs.get-credentials.outputs.DB_PASSWORD }}"
+      - name: test env vars
+        run: echo $DB_USERNAME
+
+      - name: test env vars
+        run: echo $DB_PASSWORD
 
       # - name: Setup Terraform
       #   uses: hashicorp/setup-terraform@v1

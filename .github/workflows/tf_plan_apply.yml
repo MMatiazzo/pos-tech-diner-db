@@ -60,8 +60,8 @@ jobs:
         with:
           files: '["*.tf"]'
         env:
-          DB_USERNAME: $DB_USERNAME
-          DB_PASSWORD: $DB_PASSWORD
+          DB_USERNAME: "$DB_USERNAME"
+          DB_PASSWORD: "$DB_PASSWORD"
 
       # - name: Setup Terraform
       #   uses: hashicorp/setup-terraform@v1

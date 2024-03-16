@@ -66,6 +66,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Test
+        run: echo ${{ env.DB_USERNAME }}
+
+      - name: Test2
+        run: echo ${{ env.DB_PASSWORD }}
+
       - name: Inject secrets
         uses: cschleiden/replace-tokens@v1
         with:

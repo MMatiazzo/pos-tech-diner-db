@@ -32,6 +32,7 @@ jobs:
         uses: aws-actions/aws-secretsmanager-get-secrets@v1
         with:
           secret-ids: |
+            pos-tech-diner-rds-secrets/*
             DB_USERNAME,pos-tech-diner-rds-secrets/DB_USERNAME
             DB_PASSWORD,pos-tech-diner-rds-secrets/DB_PASSWORD
 

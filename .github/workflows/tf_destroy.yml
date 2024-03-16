@@ -1,12 +1,7 @@
-name: Destroy terraform resources on the given folder
+name: Destroy terraform resources
 
 on:
   workflow_dispatch:
-    inputs:
-      dir:
-        description: "Directory with resources to be destroyed"
-        required: true
-        default: "./"
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

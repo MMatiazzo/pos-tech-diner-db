@@ -11,8 +11,32 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
+  get-credentials:
+    name: "retrieve credentials from aws secret manager"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Map AWS secrets
+        uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        with:
+          secret-ids: |
+            DB_USERNAME
+            DB_PASSWORD
+
   plan:
-    name: 'terraform plan'
+    name: "terraform plan"
+    needs: get-credentials
     runs-on: ubuntu-latest
 
     defaults:
@@ -22,6 +46,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Inject secrets
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["**/*.tf"]'
+        env:
+          DB_USERNAME: $DB_USERNAME
+          DB_PASSWORD: $DB_PASSWORD
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -67,7 +99,7 @@ jobs:
             })
 
   apply:
-    name: 'terraform apply'
+    name: "terraform apply"
     needs: plan
     runs-on: ubuntu-latest
 

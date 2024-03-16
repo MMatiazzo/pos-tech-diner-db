@@ -43,6 +43,15 @@ jobs:
           echo "DB_USERNAME=$POS_TECH_DINER_RDS_SECRETS_DB_USERNAME" >> "$GITHUB_ENV"
           echo "DB_PASSWORD=$POS_TECH_DINER_RDS_SECRETS_DB_PASSWORD" >> "$GITHUB_ENV"
 
+      - name: "Say it worked for god sake"
+        run: echo "${{ steps.aws-secrets.outputs.POS_TECH_DINER_RDS_SECRETS_DB_USERNAME }}"
+
+      - name: "Say it worked for god sake 2"
+        run: echo "$POS_TECH_DINER_RDS_SECRETS_DB_USERNAME"
+
+      - name: "Say it worked for god sake 3"
+        run: echo "${{ steps.aws-secrets.outputs.$POS_TECH_DINER_RDS_SECRETS_DB_USERNAME }}"
+
     outputs:
       DB_USERNAME: ${{ steps.aws-secrets.outputs.POS_TECH_DINER_RDS_SECRETS_DB_USERNAME }}
       DB_PASSWORD: ${{ steps.aws-secrets.outputs.POS_TECH_DINER_RDS_SECRETS_DB_PASSWORD }}

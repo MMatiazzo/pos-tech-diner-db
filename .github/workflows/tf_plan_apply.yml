@@ -36,8 +36,11 @@ jobs:
             ${{ secrets.AWS_SECRETS_ARN_RDS }}
           parse-json-secrets: true
 
-      - name: env1 echo
-        run: echo $POS_TECH_DINER_RDS_SECRETS
+      - name: Set the value
+        id: step_one
+        run: |
+          echo "DB_USERNAME=$POS_TECH_DINER_RDS_SECRETS_DB_USERNAME" >> "$GITHUB_ENV"
+          echo "DB_PASSWORD=$POS_TECH_DINER_RDS_SECRETS_DB_PASSWORD" >> "$GITHUB_ENV"
 
   plan:
     name: "terraform plan"

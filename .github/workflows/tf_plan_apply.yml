@@ -35,6 +35,18 @@ jobs:
           secret-ids: |
             ${{ secrets.AWS_SECRETS_ARN_RDS }}
 
+      - name: env1 echo
+        run: echo ${{ env.DB_USERNAME }}
+
+      - name: var1 echo
+        run: echo ${{ vars.DB_USERNAME }}
+
+      - name: env2 echo
+        run: echo ${{ env.DB_PASSWORD }}
+
+      - name: vars2 echo
+        run: echo ${{ env.DB_PASSWORD }}
+
   plan:
     name: "terraform plan"
     needs: get-credentials
@@ -55,12 +67,6 @@ jobs:
         env:
           DB_USERNAME: ${{ env.DB_USERNAME }}
           DB_PASSWORD: ${{ env.DB_PASSWORD }}
-
-      - name: var1 echo
-        run: echo ${{ env.DB_USERNAME }}
-
-      - name: var2 echo
-        run: echo ${{ env.DB_PASSWORD }}
 
       # - name: Setup Terraform
       #   uses: hashicorp/setup-terraform@v1

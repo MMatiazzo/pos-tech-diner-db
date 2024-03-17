@@ -45,8 +45,8 @@ jobs:
         with:
           files: '["*.tf"]'
         env:
-          DB_USERNAME: $POS_TECH_DINER_RDS_SECRETS_DB_USERNAME
-          DB_PASSWORD: $POS_TECH_DINER_RDS_SECRETS_DB_PASSWORD
+          DB_USERNAME: ${{ env.POS_TECH_DINER_RDS_SECRETS_DB_USERNAME }}
+          DB_PASSWORD: ${{ env.POS_TECH_DINER_RDS_SECRETS_DB_PASSWORD }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1

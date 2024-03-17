@@ -1,3 +1,18 @@
+terraform {
+  backend "s3" {
+    bucket = "fiap-terraform"
+    key    = "rds/terraform.tfstate"
+    region = "us-east-1"
+  }
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
+}
+
 provider "aws" {
   region = "us-east-1"
 }
@@ -52,8 +67,8 @@ resource "aws_db_instance" "rds" {
   engine_version = "13.10"
   identifier     = "rds-pos-tech-diner"
   # manage_master_user_password  = true 
-  username                     = "postgres_username"
-  password                     = "postgres_password"
+  username                     = #{DB_USERNAME}#
+  password                     = #{DB_PASSWORD}#
   instance_class               = "db.t3.micro"
   storage_type                 = "gp2"
   allocated_storage            = "20"
